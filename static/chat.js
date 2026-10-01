@@ -1,7 +1,7 @@
 // ============================================
 // CONFIG — points to YOUR Flask backend (no paid API!)
 // ============================================
-const BACKEND_URL = 'http://127.0.0.1:5000';
+const BACKEND_URL = '';
 
 // ---------- Grab chat elements ----------
 const chatWindow = document.getElementById('chatWindow');
