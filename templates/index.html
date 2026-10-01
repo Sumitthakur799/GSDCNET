@@ -3,174 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Plant AI - Disease Detection System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-<div id="loading-overlay" class="loading-overlay hidden">
-    <div class="spinner"></div>
-    <p>Analyzing leaf image...</p>
-</div>
-    <!-- Hero Section with Interactive Mouse Move Effect -->
-    <header class="hero" id="hero-section" onmousemove="moveHeroBackground(event)">
+
+    <!-- ============================================
+         LOADING OVERLAY
+    ============================================= -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Analyzing leaf image...</p>
+    </div>
+
+
+    <!-- ============================================
+         HERO SECTION
+    ============================================= -->
+    <header class="hero"
+            id="hero-section"
+            onmousemove="moveHeroBackground(event)">
+
         <div class="nav-brand">
-            <i class="fa-solid fa-seedling"></i> Plant AI
+            <i class="fa-solid fa-seedling"></i>
+            Plant AI
         </div>
+
         <div class="hero-content">
-            <h1>Try our AI Powered<br>Disease Detection</h1>
-            <button onclick="openUploadModal()" class="btn-try-now">Try Now</button>
+            <h1>
+                Try our AI Powered<br>
+                Disease Detection
+            </h1>
+
+            <button
+                onclick="openUploadModal()"
+                class="btn-try-now">
+                Try Now
+            </button>
         </div>
+
     </header>
 
-    <!-- App Section with Interactive Feature Cards -->
+
+    <!-- ============================================
+         APP SECTION
+    ============================================= -->
     <section class="app-section">
+
         <h2>How it works?</h2>
+
         <div class="steps-grid">
-            <div class="step-card" onclick="openUploadModal()">
-                <div class="icon-circle"><i class="fa-solid fa-camera"></i></div>
+
+            <!-- Upload Image -->
+            <div class="step-card"
+                 onclick="openUploadModal()">
+
+                <div class="icon-circle">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+
                 <h3>Upload Image</h3>
                 <p>Select your leaf photo</p>
+
             </div>
-            <div class="step-card" onclick="runAIScan()">
-            <div class="icon-circle"><i class="fa-solid fa-robot"></i></div>
-            <h3>AI Scans It</h3>
-            <p>Model runs analysis</p>
-        </div>
-            <div class="step-card" onclick="showResultsCard()">
-                <div class="icon-circle"><i class="fa-solid fa-file-medical"></i></div>
+
+
+            <!-- AI Scan -->
+            <div class="step-card"
+                 onclick="runAIScan()">
+
+                <div class="icon-circle">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+
+                <h3>AI Scans It</h3>
+                <p>Model runs analysis</p>
+
+            </div>
+
+
+            <!-- Results -->
+            <div class="step-card"
+                 onclick="showResultsCard()">
+
+                <div class="icon-circle">
+                    <i class="fa-solid fa-file-medical"></i>
+                </div>
+
                 <h3>Get Results</h3>
                 <p>View cure & confidence</p>
+
             </div>
-            <div class="step-card" onclick="toggleChatbot()">
-                <div class="icon-circle"><i class="fa-solid fa-comments"></i></div>
+
+
+            <!-- Chatbot -->
+            <div class="step-card"
+                 onclick="toggleChatbot()">
+
+                <div class="icon-circle">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
                 <h3>Ask Assistant</h3>
                 <p>Chat with AI botanist</p>
-            </div>
-        </div>
 
-       
-            <!-- Single toggle button at top -->
-            <div class="info-action-row">
-                <button class="btn-toggle-info" onclick="toggleDiseaseInfo()">
-                    <span id="info-btn-text">View Disease Information</span> <i id="info-arrow" class="fa-solid fa-chevron-down"></i>
-                </button>
             </div>
 
-            <!-- Expandable Details Container -->
-            <div id="disease-info-content" class="disease-info-content hidden">
-                <div class="info-block">
-                    <h4>SYMPTOMS</h4>
-                    <p>Dark brown spots with concentric rings on older leaves, yellowing around spots.</p>
-                </div>
-                <div class="info-block">
-                    <h4>CAUSES</h4>
-                    <p>Fungus (Alternaria solani), spreads in warm humid weather.</p>
-                </div>
-                <div class="info-block">
-                    <h4>TREATMENT</h4>
-                    <p>Remove infected leaves, apply copper-based or chlorothalonil fungicide.</p>
-                </div>
-                <div class="info-block">
-                    <h4>PREVENTION</h4>
-                    <p>Rotate crops, avoid overhead watering, space plants for airflow.</p>
-                </div>
-                <!-- Only ONE "Try Another Image" button located at the bottom -->
-                <button class="btn-try-another bottom-try-btn" onclick="resetApp()">
-                    <i class="fa-solid fa-rotate-right"></i> Try Another Image
-                </button>
-            </div>
         </div>
+
     </section>
-<!-- Dynamic Results Screen -->
-<div id="result-box" class="result-box hidden">
-    <div class="result-icon-badge">
-        <i class="fa-solid fa-seedling"></i>
-    </div>
-    <span class="detected-subtitle">DETECTED CONDITION</span>
-    <h2 class="disease-title" id="disease-title">—</h2>
 
-    <div class="confidence-container">
-        <div class="confidence-bar-track">
-            <div class="confidence-bar-fill" id="confidence-bar-fill" style="width: 0%;"></div>
+
+    <!-- ============================================
+         DYNAMIC RESULTS SCREEN
+    ============================================= -->
+    <div id="result-box"
+         class="result-box hidden">
+
+        <div class="result-icon-badge">
+            <i class="fa-solid fa-seedling"></i>
         </div>
-        <p class="confidence-text" id="confidence-text">Confidence: —</p>
+
+        <span class="detected-subtitle">
+            DETECTED CONDITION
+        </span>
+
+        <h2 class="disease-title"
+            id="disease-title">
+            —
+        </h2>
+
+
+        <!-- Confidence -->
+        <div class="confidence-container">
+
+            <div class="confidence-bar-track">
+
+                <div
+                    class="confidence-bar-fill"
+                    id="confidence-bar-fill"
+                    style="width: 0%;">
+                </div>
+
+            </div>
+
+            <p class="confidence-text"
+               id="confidence-text">
+                Confidence: —
+            </p>
+
+        </div>
+
+
+        <!-- Uploaded Image Preview -->
+        <div class="preview-container">
+
+            <img
+                id="uploaded-img"
+                src=""
+                alt="Uploaded Leaf">
+
+        </div>
+
+
+        <!-- Disease Information Toggle -->
+        <div class="info-action-row">
+
+            <button
+                class="btn-toggle-info"
+                onclick="toggleDiseaseInfo()">
+
+                <span id="info-btn-text">
+                    View Disease Information
+                </span>
+
+                <i
+                    id="info-arrow"
+                    class="fa-solid fa-chevron-down">
+                </i>
+
+            </button>
+
+        </div>
+
+
+        <!-- Disease Information -->
+        <div
+            id="disease-info-content"
+            class="disease-info-content hidden">
+
+            <!-- Symptoms -->
+            <div class="info-block">
+
+                <h4>SYMPTOMS</h4>
+
+                <p id="info-symptoms">
+                    —
+                </p>
+
+            </div>
+
+
+            <!-- Cause -->
+            <div class="info-block">
+
+                <h4>CAUSES</h4>
+
+                <p id="info-cause">
+                    —
+                </p>
+
+            </div>
+
+
+            <!-- Treatment -->
+            <div class="info-block">
+
+                <h4>TREATMENT</h4>
+
+                <p id="info-treatment">
+                    —
+                </p>
+
+            </div>
+
+
+            <!-- Prevention -->
+            <div class="info-block">
+
+                <h4>PREVENTION</h4>
+
+                <p id="info-prevention">
+                    —
+                </p>
+
+            </div>
+
+
+            <!-- Try Another Image -->
+            <button
+                class="btn-try-another bottom-try-btn"
+                onclick="resetApp()">
+
+                <i class="fa-solid fa-rotate-right"></i>
+                Try Another Image
+
+            </button>
+
+        </div>
+
     </div>
 
-    <div class="preview-container">
-        <img id="uploaded-img" src="" alt="Uploaded Leaf">
-    </div>
 
-    <!-- Single toggle button at top -->
-    <div class="info-action-row">
-        <button class="btn-toggle-info" onclick="toggleDiseaseInfo()">
-            <span id="info-btn-text">View Disease Information</span> <i id="info-arrow" class="fa-solid fa-chevron-down"></i>
-        </button>
-    </div>
+    <!-- ============================================
+         UPLOAD MODAL
+    ============================================= -->
+    <div
+        id="upload-modal"
+        class="upload-modal-overlay hidden">
 
-    <!-- Expandable Details Container -->
-    <div id="disease-info-content" class="disease-info-content hidden">
-        <div class="info-block">
-            <h4>SYMPTOMS</h4>
-            <p id="info-symptoms">—</p>
-        </div>
-        <div class="info-block">
-            <h4>CAUSES</h4>
-            <p id="info-cause">—</p>
-        </div>
-        <div class="info-block">
-            <h4>TREATMENT</h4>
-            <p id="info-treatment">—</p>
-        </div>
-        <div class="info-block">
-            <h4>PREVENTION</h4>
-            <p id="info-prevention">—</p>
-        </div>
-        <button class="btn-try-another bottom-try-btn" onclick="resetApp()">
-            <i class="fa-solid fa-rotate-right"></i> Try Another Image
-        </button>
-    </div>
-</div>
-    <!-- Upload Modal Popup -->
-    <div id="upload-modal" class="upload-modal-overlay hidden">
         <div class="upload-modal-content">
+
+            <!-- Modal Header -->
             <div class="modal-header">
+
                 <h3>Upload Leaf Image</h3>
-                <span class="close-modal-btn" onclick="closeUploadModal()">&times;</span>
-            </div>
-            <p class="modal-subtitle">Upload an image of your plant leaf for AI analysis</p>
-            
-            <div class="dropzone" onclick="document.getElementById('leafInput').click()">
-                <div class="dropzone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                <p class="dropzone-main">Click to upload or drag and drop</p>
-                <span class="dropzone-sub">JPG, PNG, WEBP (MAX. 5MB)</span>
+
+                <span
+                    class="close-modal-btn"
+                    onclick="closeUploadModal()">
+                    &times;
+                </span>
+
             </div>
 
-            <input type="file" id="leafInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+            <!-- Subtitle -->
+            <p class="modal-subtitle">
+                Upload an image of your plant leaf for AI analysis
+            </p>
+
+
+            <!-- Dropzone -->
+            <div
+                class="dropzone"
+                onclick="document.getElementById('leafInput').click()">
+
+                <div class="dropzone-icon">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+
+                <p class="dropzone-main">
+                    Click to upload or drag and drop
+                </p>
+
+                <span class="dropzone-sub">
+                    JPG, PNG, WEBP (MAX. 5MB)
+                </span>
+
+            </div>
+
+
+            <!-- File Input -->
+            <input
+                type="file"
+                id="leafInput"
+                accept="image/*"
+                style="display: none;"
+                onchange="handleImageUpload(event)">
+
         </div>
+
     </div>
 
-    <!-- Floating Chatbot Toggle Button -->
-    <div class="floating-chat-btn" onclick="toggleChatbot()" title="Open Plant Assistant">
+
+    <!-- ============================================
+         FLOATING CHATBOT BUTTON
+    ============================================= -->
+    <div
+        class="floating-chat-btn"
+        onclick="toggleChatbot()"
+        title="Open Plant Assistant">
+
         <i class="fa-solid fa-robot"></i>
+
     </div>
 
-    <!-- Chatbot Drawer -->
-    <div id="chatbot-modal" class="chatbot-modal hidden">
+
+    <!-- ============================================
+         CHATBOT DRAWER
+    ============================================= -->
+    <div
+        id="chatbot-modal"
+        class="chatbot-modal hidden">
+
+        <!-- Chatbot Header -->
         <div class="chatbot-header">
-            <h3><i class="fa-solid fa-seedling"></i> Plant Assistant</h3>
-            <span class="close-btn" onclick="toggleChatbot()">&times;</span>
+
+            <h3>
+                <i class="fa-solid fa-seedling"></i>
+                Plant Assistant
+            </h3>
+
+            <span
+                class="close-btn"
+                onclick="toggleChatbot()">
+                &times;
+            </span>
+
         </div>
-        <div class="chatbot-body" id="chat-messages">
-            <div class="message bot-message">Hi! I'm your plant care assistant. Ask me anything about symptoms, causes, or treatments!</div>
+
+
+        <!-- Chat Messages -->
+        <div
+            class="chatbot-body"
+            id="chat-messages">
+
+            <div class="message bot-message">
+                Hi! I'm your plant care assistant.
+                Ask me anything about symptoms, causes,
+                or treatments!
+            </div>
+
         </div>
+
+
+        <!-- Chat Input -->
         <div class="chatbot-footer">
-            <input type="text" id="chat-input" placeholder="Type your question..." onkeypress="handleKeyPress(event)">
-            <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+
+            <input
+                type="text"
+                id="chat-input"
+                placeholder="Type your question..."
+                onkeypress="handleKeyPress(event)">
+
+            <button onclick="sendMessage()">
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+            </button>
+
         </div>
+
     </div>
 
+
+    <!-- ============================================
+         MAIN JAVASCRIPT
+    ============================================= -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>
