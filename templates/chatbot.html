@@ -3,19 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Plant Assistant — LeafCare AI</title>
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Flask Static CSS -->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  >
 </head>
+
 <body>
 
-  <!-- Animated background -->
+  <!-- ============================================
+       ANIMATED BACKGROUND
+  ============================================= -->
   <div class="bg-blur">
     <span class="blob blob1"></span>
     <span class="blob blob2"></span>
     <span class="blob blob3"></span>
   </div>
+
   <div class="floating-leaves">
     <span class="leaf leaf1">🍃</span>
     <span class="leaf leaf2">🍃</span>
@@ -24,38 +39,121 @@
     <span class="leaf leaf5">🌿</span>
   </div>
 
-  <!-- Header with back button -->
+
+  <!-- ============================================
+       HEADER
+  ============================================= -->
   <header class="navbar chat-page-navbar">
-    <a href="index.html" class="back-btn" aria-label="Back to home">←</a>
-    <div class="logo">🌿 LeafCare AI</div>
+
+    <!-- Back to Flask Home Route -->
+    <a
+      href="{{ url_for('home') }}"
+      class="back-btn"
+      aria-label="Back to home"
+    >
+      ←
+    </a>
+
+    <div class="logo">
+      🌿 LeafCare AI
+    </div>
+
   </header>
 
+
+  <!-- ============================================
+       MAIN CHAT CONTAINER
+  ============================================= -->
   <main class="container">
+
     <section class="card chat-card full-page-chat">
+
+      <!-- Chat Header -->
       <div class="chat-header">
-        <div class="bot-avatar">🌱</div>
+
+        <div class="bot-avatar">
+          🌱
+        </div>
+
         <div>
-          <h2>Plant Assistant</h2>
-          <p class="chat-subtitle">Ask about symptoms, causes & treatment</p>
+
+          <h2>
+            Plant Assistant
+          </h2>
+
+          <p class="chat-subtitle">
+            Ask about symptoms, causes & treatment
+          </p>
+
         </div>
+
       </div>
-      <div class="chat-window" id="chatWindow">
+
+
+      <!-- Chat Window -->
+      <div
+        class="chat-window"
+        id="chatWindow"
+      >
+
         <div class="msg-row bot-row">
-          <div class="bot-avatar small">🌱</div>
-          <div class="bot-msg">Hi! Ask me about symptoms, causes, or treatment.</div>
+
+          <div class="bot-avatar small">
+            🌱
+          </div>
+
+          <div class="bot-msg">
+            Hi! Ask me about symptoms, causes, or treatment.
+          </div>
+
         </div>
+
       </div>
+
+
+      <!-- Chat Input -->
       <div class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="Type your question...">
-        <button id="sendBtn" class="send-btn" aria-label="Send">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12L21 3L13 21L11 13L3 12Z" fill="white"/>
+
+        <input
+          type="text"
+          id="chatInput"
+          placeholder="Type your question..."
+        >
+
+        <button
+          id="sendBtn"
+          class="send-btn"
+          aria-label="Send"
+        >
+
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+
+            <path
+              d="M3 12L21 3L13 21L11 13L3 12Z"
+              fill="white"
+            />
+
           </svg>
+
         </button>
+
       </div>
+
     </section>
+
   </main>
 
-  <script src="chat.js"></script>
+
+  <!-- ============================================
+       CHATBOT JAVASCRIPT
+  ============================================= -->
+  <script src="{{ url_for('static', filename='chat.js') }}"></script>
+
 </body>
 </html>
