@@ -48,17 +48,12 @@ CONFIDENCE_THRESHOLD = 0.70
 
 @app.route('/')
 def home():
-    return jsonify({
-        'message': 'GSDCNet Plant Disease Detection API',
-        'status': 'running',
-        'model_classes': len(class_names),
-        'endpoints': {
-            '/predict': 'POST (multipart/form-data, key="file") - Upload leaf image',
-            '/chat': 'POST (json: {"message": "..."}) - Text chat with bot',
-            '/classes': 'GET - List all disease classes',
-            '/stats': 'GET - Chatbot database statistics'
-        }
-    })
+    return render_template('index.html')
+
+
+@app.route('/chatbot')
+def chatbot():
+    return render_template('chatbot.html')
 
 
 @app.route('/predict', methods=['POST'])
