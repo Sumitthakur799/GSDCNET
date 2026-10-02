@@ -5,6 +5,7 @@ GSDCNet Plant Disease Detection + Chatbot Integration
 
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 import numpy as np
 import json
@@ -26,6 +27,9 @@ CORS(app)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, 'model', 'best_model.h5')
 CLASS_INDICES_PATH = os.path.join(BASE_DIR, 'model', 'class_indices.json')
+# Limit TensorFlow CPU thread usage for low-memory deployment
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
 
 print("⏳ Loading GSDCNet model...")
 model = load_model(MODEL_PATH, compile=False)
@@ -75,7 +79,9 @@ def predict():
         img_array = preprocess_image_from_pil(img)
 
         # Predict
-        predictions = model.predict(img_array, verbose=0)
+        print("🔍 Starting model prediction...")
+        predictions = model(img_array, training=False).numpy()
+        print("✅ Prediction completed")
         predicted_idx = int(np.argmax(predictions[0]))
         confidence = float(predictions[0][predicted_idx])
         predicted_class = class_names[predicted_idx]
