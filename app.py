@@ -28,7 +28,7 @@ MODEL_PATH = os.path.join(BASE_DIR, 'model', 'best_model.h5')
 CLASS_INDICES_PATH = os.path.join(BASE_DIR, 'model', 'class_indices.json')
 
 print("⏳ Loading GSDCNet model...")
-model = load_model(MODEL_PATH)
+model = load_model(MODEL_PATH, compile=False)
 print("✅ Model loaded successfully!")
 
 with open(CLASS_INDICES_PATH, 'r') as f:
